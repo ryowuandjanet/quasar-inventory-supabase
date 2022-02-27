@@ -12,11 +12,23 @@
         <template v-slot:top>
           <span class="text-h6"> Category </span>
           <q-space />
-          <q-btn label="Add New" color="primary" />
+          <q-btn
+            label="Add New"
+            color="primary"
+            icon="mdi-plus"
+            dense
+            :to="{ name: 'form-category' }"
+          />
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil-outline" color="info" dense size="sm">
+            <q-btn
+              icon="mdi-pencil-outline"
+              color="info"
+              dense
+              size="sm"
+              @click="handleEdit(props.row)"
+            >
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
             <q-btn icon="mdi-delete-outline" color="negative" dense size="sm">
@@ -50,12 +62,14 @@ const columns = [
 import { defineComponent, ref, onMounted } from "vue";
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "PageCategoryList",
   setup() {
     const categories = ref([]);
     const loading = ref(true);
+    const router = useRouter();
     const { list } = useApi();
     const { notifyError } = useNotify();
 
@@ -69,6 +83,10 @@ export default defineComponent({
       }
     };
 
+    const handleEdit = (category) => {
+      router.push({ name: "form-category", params: { id: category.id } });
+    };
+
     onMounted(() => {
       handleListCategories();
     });
@@ -77,6 +95,7 @@ export default defineComponent({
       columns,
       categories,
       loading,
+      handleEdit,
     };
   },
 });
