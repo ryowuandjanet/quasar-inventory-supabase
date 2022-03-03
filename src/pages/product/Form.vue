@@ -9,6 +9,13 @@
         @submit.prevent="handleSubmit"
       >
         <q-input
+          label="Image"
+          stack-label
+          v-model="img"
+          type="file"
+          accept="image/*"
+        />
+        <q-input
           label="Name"
           v-model="form.name"
           :rules="[(val) => (val && val.length > 0) || 'Name is required']"
@@ -67,17 +74,15 @@ import { defineComponent, ref, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import useApi from "src/composables/UseApi";
 import useNotify from "src/composables/UseNotify";
-
 export default defineComponent({
   name: "PageFormCategory",
   setup() {
     const table = "product";
     const router = useRouter();
     const route = useRoute();
-    const { post, getById, update, list } = useApi();
+    const { post, getById, update, list, uploadImg } = useApi();
     const { notifyError, notifySuccess } = useNotify();
     const isUpdate = computed(() => route.params.id);
-
     let product = {};
     const optionsCategory = ref([]);
     const form = ref({
@@ -86,8 +91,9 @@ export default defineComponent({
       amount: 0,
       price: 0,
       category_id: "",
+      img_url: "",
     });
-
+    const img = ref([]);
     onMounted(() => {
       handleListCategories();
       if (isUpdate.value) {
@@ -97,9 +103,12 @@ export default defineComponent({
     const handleListCategories = async () => {
       optionsCategory.value = await list("category");
     };
-
     const handleSubmit = async () => {
       try {
+        if (img.value.length > 0) {
+          const imgUrl = await uploadImg(img.value[0], "products");
+          form.value.img_url = imgUrl;
+        }
         if (isUpdate.value) {
           await update(table, form.value);
           notifySuccess("Update Successfully");
@@ -112,7 +121,6 @@ export default defineComponent({
         notifyError(error.message);
       }
     };
-
     const handleGetProduct = async (id) => {
       try {
         product = await getById(table, id);
@@ -121,11 +129,12 @@ export default defineComponent({
         notifyError(error.message);
       }
     };
-
     return {
       handleSubmit,
       form,
+      isUpdate,
       optionsCategory,
+      img,
     };
   },
 });
