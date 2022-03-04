@@ -52,7 +52,7 @@ module.exports = configure(function (ctx) {
       env: {
         SUPABASE_URL: 'https://wyiaqsgvsxmtvunehsoq.supabase.co',
         SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5aWFxc2d2c3htdHZ1bmVoc29xIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDU5MzA0MTMsImV4cCI6MTk2MTUwNjQxM30.VmwJ5DhYmPGJuF7cM0uU1MyX4vw9Y914nPpS9tRmOLY'
-      },
+      }
       // transpile: false,
       // publicPath: '/',
 
@@ -117,7 +117,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Dialog','Notify']
+      plugins: ['Dialog', 'Notify']
     },
 
     // animations: 'all', // --- includes all animations
