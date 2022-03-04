@@ -6,13 +6,11 @@
   >
     <q-card>
       <q-card-section>
-        <div class="text-h6">
-          Details
-        </div>
+        <div class="text-h6">Details</div>
       </q-card-section>
 
       <q-card-section v-if="product.img_url">
-        <q-img :src="product.img_url" :ratio="4/3" style="min-width: 300px" />
+        <q-img :src="product.img_url" :ratio="4 / 3" style="min-width: 300px" />
       </q-card-section>
 
       <q-card-section>
@@ -39,35 +37,39 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { formatCurrency } from 'src/utils/format'
-import { openURL } from 'quasar'
+import { defineComponent } from "vue";
+import { formatCurrency } from "src/utils/format";
+import { openURL } from "quasar";
 export default defineComponent({
-  name: 'DialogProductDetails',
+  name: "DialogProductDetails",
   props: {
     show: {
       type: Boolean,
-      required: true
+      required: true,
     },
     product: {
-      type: Object
-    }
+      type: Object,
+    },
   },
-  setup (props, { emit }) {
-    const phone = '9182828945'
-    const msg = 'Olá, fiquei interressado no produto: '
+  setup(props, { emit }) {
+    const phone = "9182828945";
+    const msg = "Olá, fiquei interressado no produto: ";
     const handleClose = () => {
-      emit('hideDialog')
-    }
+      emit("hideDialog");
+    };
     const handleSendWpp = () => {
-      const link = encodeURI(`https://api.whatsapp.com/send?phone=55${phone}&text=${msg} - ${props.product.name} - ${formatCurrency(props.product.price)}`)
-      openURL(link)
-    }
+      const link = encodeURI(
+        `https://api.whatsapp.com/send?phone=55${phone}&text=${msg} - ${
+          props.product.name
+        } - ${formatCurrency(props.product.price)}`
+      );
+      openURL(link);
+    };
     return {
       formatCurrency,
       handleClose,
-      handleSendWpp
-    }
-  }
-})
+      handleSendWpp,
+    };
+  },
+});
 </script>
